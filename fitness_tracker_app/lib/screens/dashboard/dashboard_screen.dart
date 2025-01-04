@@ -5,20 +5,22 @@ import '../../models/activity.dart';
 import '../../models/goal.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  final ApiService apiService;
+  const DashboardScreen({super.key, required this.apiService});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final ApiService _apiService = ApiService();
+  late final ApiService _apiService = ApiService();
   List<Activity> _recentActivities = [];
   List<Goal> _activeGoals = [];
 
   @override
   void initState() {
     super.initState();
+    //_apiService = widget.apiService;
     _loadData();
   }
 

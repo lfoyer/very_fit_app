@@ -1,16 +1,11 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
 import 'screens/dashboard/dashboard_screen.dart';
 import 'screens/activities/activity_screen.dart';
 import 'screens/goals/goals_screen.dart';
 import 'screens/login/login_screen.dart';
-import 'package:flutter/material.dart';
-import 'screens/login/login_screen.dart';
-import 'screens/dashboard/dashboard_screen.dart';
+import 'services/api_service.dart';
+import 'services/auth_service.dart';
 
-/* void main() {
-  runApp(const MyApp());
-} */
 void main() {
   runApp(MaterialApp(
     home: const LoginScreen(),
@@ -21,48 +16,40 @@ void main() {
   ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fitness Tracker',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
-      home: const MainScreen(),
-    );
-  }
-}
-
-/* class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-} */
-// lib/main.dart
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  
-  static const List<Widget> _screens = <Widget>[
-    DashboardScreen(),
-    ActivityScreen(),
-    GoalsScreen(),
+  late ApiService _apiService;
+
+  @override
+  void initState() {
+    super.initState();
+    _initApiService();
+  }
+
+  Future<void> _initApiService() async {
+    final token = await AuthService().getToken();
+    setState(() {
+      _apiService = ApiService(token: token);
+    });
+  }
+
+  List<Widget> _screens() => [
+    DashboardScreen(apiService: _apiService),
+    ActivityScreen(apiService: _apiService),
+    GoalsScreen(apiService: _apiService),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_selectedIndex],
+      body: _apiService != null ? _screens()[_selectedIndex] : const Center(child: CircularProgressIndicator()),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (int index) {
@@ -88,4 +75,3 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
-

@@ -4,14 +4,15 @@ import '../../models/goal.dart';
 import '../../services/api_service.dart';
 
 class GoalsScreen extends StatefulWidget {
-  const GoalsScreen({super.key});
+  final ApiService apiService;
+  const GoalsScreen({super.key, required this.apiService});
 
   @override
   State<GoalsScreen> createState() => _GoalsScreenState();
 }
 
 class _GoalsScreenState extends State<GoalsScreen> {
-  final ApiService _apiService = ApiService();
+  late final ApiService _apiService = ApiService();
   final _formKey = GlobalKey<FormState>();
   List<Goal> _goals = [];
 
@@ -23,6 +24,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
   @override
   void initState() {
     super.initState();
+    //_apiService = widget.apiService;
     _loadGoals();
   }
 

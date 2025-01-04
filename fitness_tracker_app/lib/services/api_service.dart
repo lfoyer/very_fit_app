@@ -6,7 +6,10 @@ import '../models/goal.dart';
 
 class ApiService {
   final String baseUrl = 'http://10.0.2.2:8000/api';  // For Android emulator
-  final String token = '24bc9d1709361fe6777d3512ec1dc33969bfb51d';
+  final String? token;
+
+  ApiService({this.token});
+  //'24bc9d1709361fe6777d3512ec1dc33969bfb51d';
 
   Map<String, String> get headers => {
     'Content-Type': 'application/json',
@@ -16,7 +19,11 @@ class ApiService {
   Future<List<Activity>> getActivities() async {
     final response = await http.get(
       Uri.parse('$baseUrl/activities/'),
-      headers: headers,
+      //headers: headers,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token $token',
+      }
     );
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -25,10 +32,24 @@ class ApiService {
     throw Exception('Failed to load activities');
   }
 
-  Future<Activity> createActivity(Activity activity) async {
+  /* Future<Activity> createActivity(Activity activity) async {
     final response = await http.post(
       Uri.parse('$baseUrl/activities/'),
       headers: headers,
+      body: json.encode(activity.toJson()),
+    );
+    if (response.statusCode == 201) {
+      return Activity.fromJson(json.decode(response.body));
+    }
+    throw Exception('Failed to create activity');
+  } */
+  Future<Activity> createActivity(Activity activity) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/activities/'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token $token',
+      },
       body: json.encode(activity.toJson()),
     );
     if (response.statusCode == 201) {
