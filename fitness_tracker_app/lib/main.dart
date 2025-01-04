@@ -3,9 +3,22 @@ import 'package:flutter/material.dart';
 import 'screens/dashboard/dashboard_screen.dart';
 import 'screens/activities/activity_screen.dart';
 import 'screens/goals/goals_screen.dart';
+import 'screens/login/login_screen.dart';
+import 'package:flutter/material.dart';
+import 'screens/login/login_screen.dart';
+import 'screens/dashboard/dashboard_screen.dart';
 
-void main() {
+/* void main() {
   runApp(const MyApp());
+} */
+void main() {
+  runApp(MaterialApp(
+    home: const LoginScreen(),
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+      useMaterial3: true,
+    ),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,9 +37,15 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainScreen extends StatefulWidget {
+/* class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+} */
+// lib/main.dart
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -69,3 +88,4 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
+
