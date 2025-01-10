@@ -16,9 +16,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders',
+    'fitness_tracker',
     'api',
+    'corsheaders',
+    'rest_framework_simplejwt',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -29,6 +33,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'fitness_tracker.urls'
@@ -36,7 +41,7 @@ ROOT_URLCONF = 'fitness_tracker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'fitness_tracker_web/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -48,7 +53,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'fitness_tracker.wsgi.application'
 
 DATABASES = {
@@ -70,21 +74,44 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
 
+# STATICFILES_DIRS is where you add extra static file locations
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'fitness_tracker_web/static'),  # If using app-level static files
+    # Or you can add the project-level static folder
+    os.path.join(BASE_DIR, 'static'),  # For project-level static files
+]
+
+# STATIC_ROOT is the directory where static files will be collected in production (don't use this in development)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True  # Only for development
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Use JWT authentication
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Ensure user is authenticated
+    ]
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+        'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+        'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Or JWT if you're using that
+    ],
 }
 
 INSTALLED_APPS += ['rest_framework.authtoken']

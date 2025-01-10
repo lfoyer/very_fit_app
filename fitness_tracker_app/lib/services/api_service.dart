@@ -19,11 +19,11 @@ class ApiService {
   Future<List<Activity>> getActivities() async {
     final response = await http.get(
       Uri.parse('$baseUrl/activities/'),
-      //headers: headers,
-      headers: {
+      headers: headers,
+      /*headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Token $token',
-      }
+      }*/
     );
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -32,7 +32,7 @@ class ApiService {
     throw Exception('Failed to load activities');
   }
 
-  /* Future<Activity> createActivity(Activity activity) async {
+  Future<Activity> createActivity(Activity activity) async {
     final response = await http.post(
       Uri.parse('$baseUrl/activities/'),
       headers: headers,
@@ -42,7 +42,8 @@ class ApiService {
       return Activity.fromJson(json.decode(response.body));
     }
     throw Exception('Failed to create activity');
-  } */
+  }
+  /*
   Future<Activity> createActivity(Activity activity) async {
     final response = await http.post(
       Uri.parse('$baseUrl/activities/'),
@@ -56,7 +57,7 @@ class ApiService {
       return Activity.fromJson(json.decode(response.body));
     }
     throw Exception('Failed to create activity');
-  }
+  }*/
 
   Future<List<Goal>> getGoals() async {
     final response = await http.get(

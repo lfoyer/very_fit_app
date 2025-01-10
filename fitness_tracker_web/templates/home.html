@@ -1,0 +1,478 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Arial', sans-serif;
+            animation: backgroundChange 10s infinite alternate; /* Smooth background color change */
+        }
+
+        /* Keyframes for color-changing background */
+        @keyframes backgroundChange {
+            0% {
+                background-color: #f4f4f9;
+            }
+            25% {
+                background-color: #f39c12; /* Yellow */
+            }
+            50% {
+                background-color: #1abc9c; /* Teal */
+            }
+            75% {
+                background-color: #e74c3c; /* Red */
+            }
+            100% {
+                background-color: #9b59b6; /* Purple */
+            }
+        }
+
+        h1 {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ff6347;
+            text-align: center;
+            font-size: 4em;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2), 0 0 25px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            animation: funkyText 3s infinite alternate;
+        }
+
+        /* Funky text animation */
+        @keyframes funkyText {
+            0% {
+                transform: scale(1);
+                color: #ff6347;
+            }
+            50% {
+                transform: scale(1.2);
+                color: #f39c12;
+            }
+            100% {
+                transform: scale(1);
+                color: #1abc9c;
+            }
+        }
+
+        #activities-list {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .activity-button {
+            cursor: pointer;
+            color: red;
+            font-size: 14px;
+        }
+
+        .login-form {
+            text-align: center;
+            margin-top: 50px;
+        }
+        #activities-list table td {
+            background-color: white;
+        }
+
+        #goals-list table td {
+            background-color: white;
+        }
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Fitness Tracker!</h1>
+        
+        <!-- Display GIF Image -->
+        <div class="text-center">
+            <img src="{% static 'images/rilakkuma.gif' %}" alt="Fitness Tracker GIF" class="img-fluid">
+        </div>
+        
+        <!-- Audio -->
+        <audio autoplay loop>
+            <source src="{% static 'audio/funk.mp3' %}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <!-- Login Form -->
+        <div class="login-form">
+            <h1>Login</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+
+        <!-- Add Activity Form -->
+        <h1>Activities</h1>
+        <h3>Add a New Activity</h3>
+        <form id="add-activity-form">
+            <div class="form-group">
+                <select id="activity-type" name="type">
+                    <option value="RUN">Run</option>
+                    <option value="BIKE">Bike</option>
+                    <option value="GYM">Gym</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="activity-duration">Duration (mins)</label>
+                <input type="number" id="activity-duration" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="activity-distance">Distance (km)</label>
+                <input type="number" id="activity-distance" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="activity-calories">Calories</label>
+                <input type="number" id="activity-calories" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Activity</button>
+        </form>
+
+        <!-- Activities Table -->
+        <div id="activities-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Activity Type</th>
+                        <th>Duration (mins)</th>
+                        <th>Distance (km)</th>
+                        <th>Calories</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="activities-table-body">
+                    <!-- Activities will be injected here -->
+                </tbody>
+            </table>
+            <p id="no-activities-msg" class="text-center"></p>
+        </div>
+
+        <h1>Goals</h1>
+        <h3>Add a New Goal</h3>
+        <form id="goal-form">
+            <label for="type">Goal Type:</label>
+            <select id="type" name="type">
+                <option value="FREQ">Frequency</option>
+                <option value="DIST">Distance</option>
+                <option value="CAL">Calories</option>
+            </select>
+        
+            <div class="form-group">
+                <label for="target">Target Value:</label>
+                <input type="number" id="target" name="target" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="completed">Completed:</label>
+                <input type="checkbox" id="completed" name="completed" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Goal</button>
+        </form>
+
+        <div id="goals-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Goal Type</th>
+                        <th>Target</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Completed</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="goals-table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- JavaScript at the bottom -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to fetch activities
+            // Fetch activities
+            function fetchActivities() {
+                const token = localStorage.getItem('authToken'); // Ensure token is defined
+
+                fetch('/api/activities/', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `${token}`, // Pass token in Authorization header
+                        'Content-Type': 'application/json'                    }
+                })
+                .then(response => {
+                    console.log('Response:', response); // Debugging line
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data:', data); // Debugging line
+                    const activitiesTableBody = document.getElementById('activities-table-body');
+                    const noActivitiesMsg = document.getElementById('no-activities-msg');
+                    
+                    if (data.length > 0) {
+                        activitiesTableBody.innerHTML = '';
+                        data.forEach(activity => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${activity.type}</td>
+                                <td>${activity.duration}</td>
+                                <td>${activity.distance}</td>
+                                <td>${activity.calories}</td>
+                                <td><button class="activity-button" data-id="${activity.id}">Delete</button></td>
+                            `;
+                            activitiesTableBody.appendChild(row);
+                        });
+                        noActivitiesMsg.textContent = ''; // Hide no activities message if there are activities
+                    } else {
+                        activitiesTableBody.innerHTML = '';
+                        noActivitiesMsg.textContent = 'No activities found.';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching activities:', err);
+                    const activitiesTableBody = document.getElementById('activities-table-body');
+                    const noActivitiesMsg = document.getElementById('no-activities-msg');
+                    activitiesTableBody.innerHTML = '';
+                    noActivitiesMsg.textContent = 'Sorry, there was an error fetching the activities.';
+                });
+            }
+
+
+            // Fetch activities on page load if logged in
+            if (localStorage.getItem('token')) {
+                fetchActivities();
+            }
+    
+            // Add activity
+            const addActivityForm = document.getElementById('add-activity-form');
+            addActivityForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const type = document.getElementById('activity-type').value;
+                const duration = document.getElementById('activity-duration').value;
+                const distance = document.getElementById('activity-distance').value;
+                const calories = document.getElementById('activity-calories').value;
+                const token = localStorage.getItem('authToken');  // Retrieve the token from localStorage
+
+                fetch('/api/activities/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': token,  // Use token from localStorage in Authorization header
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type: type,
+                        duration: duration,
+                        distance: distance,
+                        calories: calories
+                    })
+                })
+                .then(response => response.json())
+                .then(() => {
+                    fetchActivities(); // Refresh the activities list
+                    addActivityForm.reset(); // Clear the form
+                })
+                .catch(err => console.error('Error adding activity:', err));
+            });
+
+    
+            // Delete activity
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.classList.contains('activity-button')) {
+                    const activityId = e.target.getAttribute('data-id');
+                    const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
+
+                    fetch(`/api/activities/${activityId}/`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': token,  // Use token from localStorage in Authorization header
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Activity deleted');
+                            fetchActivities(); // Re-fetch data after deletion
+                        } else {
+                            console.log('Failed to delete activity');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            });
+
+    
+            // Login form submission
+            const loginForm = document.getElementById('login-form');
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                // Replace the login logic with actual backend logic
+                if (username === "admin" && password === "admin") {
+                    alert("Login successful!");
+
+                    // Store token in localStorage (simulated for now)
+                    localStorage.setItem('authToken', 'Token e0a63d2bb805a8e6c5d2c653c1923235c70aee9d');  // Store the token here
+                    document.querySelector(".login-form").style.display = 'none';  // Hide login form after success
+                    fetchActivities(); // Load activities after successful login
+                } else {
+                    alert("Invalid credentials!");
+                }
+            });
+
+        });
+
+        // Goal form
+        document.getElementById('goal-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const data = {
+                type: document.getElementById('type').value,
+                target: parseFloat(document.getElementById('target').value),
+                start_date: document.getElementById('start_date').value,
+                end_date: document.getElementById('end_date').value,
+                completed: document.getElementById('completed').checked,
+            };
+            const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
+
+            fetch('/api/fitnessgoals/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token, // Add if needed
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (response.ok) {
+                    fetchGoals(); // Refresh goals list
+                } else {
+                    alert('Error creating goal');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+        
+        // Fetch goals
+        const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
+
+        function fetchGoals() {
+            fetch('/api/fitnessgoals/', {
+                method: 'GET',
+                    headers: {
+                        'Authorization': token, // Add if needed
+                    },
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    updateGoalsTable(data);
+                })
+                .catch((error) => console.error('Error fetching goals:', error));
+        }
+
+        function updateGoalsTable(goals) {
+            const tableBody = document.getElementById('goals-table-body');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            goals.forEach((goal) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${goal.type}</td>
+                    <td>${goal.target}</td>
+                    <td>${goal.start_date}</td>
+                    <td>${goal.end_date}</td>
+                    <td>${goal.completed ? 'Yes' : 'No'}</td>
+                    <td>
+                        <button class="delete-goal-btn" data-id="${goal.id}">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Attach event listeners to all delete buttons
+            const deleteButtons = document.querySelectorAll('.delete-goal-btn');
+            deleteButtons.forEach((button) => {
+                button.addEventListener('click', function () {
+                    const goalId = this.getAttribute('data-id');
+                    deleteGoal(goalId); // Call the deleteGoal function
+                });
+            });
+        }
+
+
+        function deleteGoal(goalId) {
+            const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+
+            fetch(`/api/fitnessgoals/${goalId}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': token, // Use the token in the Authorization header
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((response) => {
+                if (response.ok) {
+                    alert('Goal deleted successfully!');
+                    fetchGoals(); // Refresh the goals list after deletion
+                } else {
+                    alert('Failed to delete goal.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error deleting goal:', error);
+            });
+        }
+
+        
+
+        document.addEventListener('DOMContentLoaded', fetchGoals);
+
+    </script>
+</body>
+</html>
