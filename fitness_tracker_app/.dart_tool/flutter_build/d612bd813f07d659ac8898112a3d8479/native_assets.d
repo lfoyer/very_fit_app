@@ -1,0 +1,1 @@
+ /home/laurent/Documents/INSA/CASI/projet/very_fit_app/fitness_tracker_app/.dart_tool/flutter_build/d612bd813f07d659ac8898112a3d8479/native_assets.yaml: 
